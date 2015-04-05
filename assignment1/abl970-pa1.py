@@ -1,7 +1,6 @@
-# VI. Notice that I have provided a file called pa1tests.py and another called pa1tests-output.txt. These files are intended to show you how I will call your code, and what I expect your code to output. They are not intended to be exhaustive, but rather just to provide you with some testing. Please design more tests for your code as you see fit.
-
 #Name: Austin Lawrence		netID:abl970
 #This is a homework submission for assignment number 1 of EECS-348 Spring 2015.  It should be pretty snazzy.
+
 import time
 import math
 
@@ -58,8 +57,9 @@ def bfs(tree,elem):
 				fringe.append(node[i])
 		fringe.popleft()
 		print curr
-		if len(fringe) == 0:
-			print "no match found"
+		if len(fringe) == 0 and curr == elem:
+			return True
+		elif len(fringe) == 0 and curr != elem:
 			return False
 	return True
 
@@ -69,25 +69,35 @@ def dfs(tree,elem):
 
 	# Add the initial state (root) to the fringe
 	myList = deque(tree)
-	node = myList[0]
-	myList.popleft()
-	curr = node
+	curr = myList.popleft()
+	print curr
 
-	# Choose a node to examine from the fringe, repeat as necessary
+	# repeat until the list is length zero or the target is found 
 	while curr != elem:
-		node = deque(myList[0])
-		curr = node.popleft()
+		node = myList.pop()
+		curr = node[0]
 		print curr
-		myList.appendleft(node)
-		print myList
-		print ''
-		if len(myList) == 0:
-			print "failure"
+		if len(node) > 1:
+			for i in range(len(node)):
+				if i != 0:
+					myList.append(node[i])
+		if len(myList) == 0 and curr == elem:
+			return True
+		elif len(myList) == 0 and curr != elem:
 			return False
 	return True
 
 print "This should work:"
-# dfs([4, [10, [33], [2]], [3], [14, [12]], [1]],1)
+bfs([4, [10, [33], [2]], [3], [14, [12]], [1]],2)
+print ""
+
+print "This should work:"
+bfs([4, [10, [33], [2]], [3], [14, [12]], [1]],12)
+print ""
+
+print "This should fail:"
+bfs([4, [10, [33], [2]], [3], [14, [12]], [1]],34)
+print ""
 
 class TTTBoard:
 	def __init__(self):
